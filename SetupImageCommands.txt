@@ -1,0 +1,39 @@
+### Appendix - How the RStudio Server image was created
+
+### Set up CRAN repository and install latest R
+sudo nano /etc/apt/sources.list
+
+### add the following line to the file on a new line (without ##):
+### deb http://cran.ms.unimelb.edu.au/bin/linux/ubuntu trusty/
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo apt-get update
+sudo apt-get install r-base
+sudo apt-get install r-base-dev
+
+### make the R library writable for all users
+sudo chmod 777 /usr/local/lib/R/site-library
+
+### Download and install RStudio Server for Ubuntu
+sudo apt-get install gdebi-core
+wget https://download2.rstudio.org/rstudio-server-0.99.893-amd64.deb
+sudo gdebi rstudio-server-0.99.893-amd64.deb
+rm rstudio-server-0.99.893-amd64.deb
+
+### Install some useful tools
+sudo apt-get install texlive lmodern libcurl4-openssl-dev
+
+### A script (~/.bash_profile) was created 
+### to run once on launching the instance, 
+### and then delete itself:
+
+sudo groupadd Ruser
+sudo usermod -g Ruser ubuntu
+sudo chown :Ruser /mnt
+sudo chmod 770 /mnt
+ln -s /mnt ~/Mounted_Storage
+echo "Set a password for user 'ubuntu' "
+sudo passwd ubuntu
+sudo rstudio-server verify-installation
+echo "Set-up is complete. Enter <IPaddress>:8787 in your web browser to access RStudio"
+wait && rm ~/.bash_profile

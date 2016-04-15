@@ -1,0 +1,55 @@
+
+##  The commands to set up an Ubuntu instance running a version of R of your choice are below.
+
+##  Modify the document for your required version of R (edit lines 29-31)
+##  Launch an instance with an Ubuntu image. 
+##  Access and security ports 22 and 8787
+##  Access the instance.
+##  Open a new document for editing by entering the commands after ' $ ' in your terminal/PuTTY shell
+
+##  $ nano start.sh
+##       - copy and paste the contents of this whole file into the document
+##       - contol "o" to save
+##       - control "x" to exit
+##  $ bash start.sh
+
+
+
+sudo passwd ubuntu
+sudo chown ubuntu /mnt
+ln -s /mnt ~/Mounted_Storage
+
+## Installing other R from source tarball
+
+sudo apt-get update
+sudo apt-get build-dep r-base
+
+##  find the compressed file of R version here:
+##  https://cran.r-project.org/src/base/
+##  change the following to suit your required R-version
+
+wget https://cran.r-project.org/src/base/R-3/R-3.1.3.tar.gz
+tar -xzvf R-3.1.3.tar.gz 
+cd R-3.1.3/
+./configure --enable-R-shlib
+make
+sudo make install
+
+##  you may like to check this is the current version of R-Studio at 
+##  https://www.rstudio.com/products/rstudio/download-server/
+
+sudo apt-get install gdebi-core texlive lmodern libssl-dev
+wget https://download2.rstudio.org/rstudio-server-0.99.893-amd64.deb
+sudo gdebi rstudio-server-0.99.893-amd64.deb
+rm rstudio-server-0.99.893-amd64.deb
+
+sudo rstudio-server verify-installation
+
+##  Access the RStudio session with this url:
+## <ipaddress>:8787
+
+
+
+
+    
+    
